@@ -1,4 +1,4 @@
-# compiled
+#C, C++ compiled
 *.o
 *.elf
 *.asm
@@ -6,6 +6,18 @@
 *.bin
 *.a
 *.so
+
+#python
+__pycache__/
+*.py[cod]
+*$py.class
+eggs/
+.eggs/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.ipynb_checkpoints
 
 # file system
 .DS_Store
