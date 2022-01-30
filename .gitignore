@@ -1,0 +1,12 @@
+# compiled
+*.o
+*.elf
+*.asm
+*.hex
+*.bin
+*.a
+*.so
+
+# file system
+.DS_Store
+.DS_Store?
