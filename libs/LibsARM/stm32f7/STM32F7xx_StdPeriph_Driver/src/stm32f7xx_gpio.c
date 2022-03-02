@@ -47,58 +47,78 @@ void GPIO_DeInit(GPIO_TypeDef* GPIOx)
 {
   /* Check the parameters */
   assert_param(IS_GPIO_ALL_PERIPH(GPIOx));
-
+  
+#ifdef GPIOA
   if (GPIOx == GPIOA)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOA, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOA, DISABLE);
   }
+#endif
+#ifdef GPIOB
   else if (GPIOx == GPIOB)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOB, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOB, DISABLE);
   }
+#endif
+#ifdef GPIOC
   else if (GPIOx == GPIOC)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOC, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOC, DISABLE);
   }
+#endif
+#ifdef GPIOD
   else if (GPIOx == GPIOD)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOD, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOD, DISABLE);
   }
+#endif
+#ifdef GPIOE
   else if (GPIOx == GPIOE)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOE, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOE, DISABLE);
   }
+#endif
+#ifdef GPIOF
   else if (GPIOx == GPIOF)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOF, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOF, DISABLE);
   }
+#endif
+#ifdef GPIOG
   else if (GPIOx == GPIOG)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOG, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOG, DISABLE);
   }
+#endif
+#ifdef GPIOH
   else if (GPIOx == GPIOH)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOH, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOH, DISABLE);
   }
+#endif
+#ifdef GPIOI
   else if (GPIOx == GPIOI)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOI, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOI, DISABLE);
   }
-#if defined(STM32F767xx)
+#endif
+#ifdef GPIOJ
   else if (GPIOx == GPIOJ)
   {
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOJ, ENABLE);
     RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOJ, DISABLE);
   }
+#endif
+#ifdef GPIOK
   else
   {
     if (GPIOx == GPIOK)

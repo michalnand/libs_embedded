@@ -1066,8 +1066,8 @@ typedef struct
 #define TIM_FLAG_CC2OF                     (TIM_SR_CC2OF)
 #define TIM_FLAG_CC3OF                     (TIM_SR_CC3OF)
 #define TIM_FLAG_CC4OF                     (TIM_SR_CC4OF)
-//#define TIM_FLAG_CC5                       (TIM_SR_CC5IF)
-//#define TIM_FLAG_CC6                       (TIM_SR_CC6IF)
+#define TIM_FLAG_CC5                       (TIM_SR_CC5IF)
+#define TIM_FLAG_CC6                       (TIM_SR_CC6IF)
 #define IS_TIM_GET_FLAG(FLAG) (((FLAG) == TIM_FLAG_Update) || \
                                ((FLAG) == TIM_FLAG_CC1) || \
                                ((FLAG) == TIM_FLAG_CC2) || \
@@ -1080,22 +1080,11 @@ typedef struct
                                ((FLAG) == TIM_FLAG_CC1OF) || \
                                ((FLAG) == TIM_FLAG_CC2OF) || \
                                ((FLAG) == TIM_FLAG_CC3OF) || \
-                               ((FLAG) == TIM_FLAG_CC4OF)) // ||\
-//                               ((FLAG) == TIM_FLAG_CC5) ||\
-//                               ((FLAG) == TIM_FLAG_CC6))
+                               ((FLAG) == TIM_FLAG_CC4OF)||\
+                               ((FLAG) == TIM_FLAG_CC5) || \
+                               ((FLAG) == TIM_FLAG_CC6))
 
 #define IS_TIM_CLEAR_FLAG(TIM_FLAG) ((((TIM_FLAG) & (uint32_t)0xE000) == 0x0000) && ((TIM_FLAG) != 0x0000))
-/**
-  * @}
-  */ 
-
-/** @defgroup TIM_OCReferenceClear 
-  * @{
-  */
-#define TIM_OCReferenceClear_ETRF          ((uint32_t)TIM_SMCR_OCCS)
-#define TIM_OCReferenceClear_OCREFCLR      ((uint32_t)0x0000)
-#define TIM_OCREFERENCECECLEAR_SOURCE(SOURCE) (((SOURCE) == TIM_OCReferenceClear_ETRF) || \
-                                              ((SOURCE) == TIM_OCReferenceClear_OCREFCLR))
 /**
   * @}
   */ 

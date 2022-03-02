@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    system_stm32f7xx.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    30-December-2016
   * @brief   CMSIS Cortex-M7 Device Peripheral Access Layer System Source File.
   *
   *   This file provides two functions and one global variable to be called from 
@@ -66,20 +64,12 @@
 #include "stm32f7xx.h"
 
 #if !defined  (HSE_VALUE) 
-  #define HSE_VALUE    ((uint32_t)8000000) /*!< Default value of the External oscillator in Hz */
+  #define HSE_VALUE    ((uint32_t)25000000) /*!< Default value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
 
 #if !defined  (HSI_VALUE)
   #define HSI_VALUE    ((uint32_t)16000000) /*!< Value of the Internal oscillator in Hz*/
 #endif /* HSI_VALUE */
-
-/************************* PLL Parameters *************************************/
-/* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N */
-#define PLL_M      (HSE_VALUE/1000000)
-
-static void CPU_CACHE_Enable(void);
-static void MPU_Config(void);
-static void SetSysClock(void);
 
 /**
   * @}
@@ -130,7 +120,7 @@ static void SetSysClock(void);
                is no need to call the 2 first functions listed above, since SystemCoreClock
                variable is updated automatically.
   */
-  uint32_t SystemCoreClock = 216000000;
+  uint32_t SystemCoreClock = 16000000;
   const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
   const uint8_t APBPrescTable[8] = {0, 0, 0, 0, 1, 2, 3, 4};
 
@@ -181,10 +171,6 @@ void SystemInit(void)
 
   /* Disable all interrupts */
   RCC->CIR = 0x00000000;
-  
-  MPU_Config();
-  CPU_CACHE_Enable();
-  SetSysClock();
 
   /* Configure the Vector Table location add offset address ------------------*/
 #ifdef VECT_TAB_SRAM
@@ -276,119 +262,6 @@ void SystemCoreClockUpdate(void)
   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
   /* HCLK frequency */
   SystemCoreClock >>= tmp;
-}
-
-/**
-  * @brief  System Clock Configuration
-  *         The system Clock is configured as follow : 
-  *            System Clock source            = PLL (HSE)
-  *            SYSCLK(Hz)                     = 216000000
-  *            HCLK(Hz)                       = 216000000
-  *            AHB Prescaler                  = 1
-  *            APB1 Prescaler                 = 4
-  *            APB2 Prescaler                 = 2
-  *            HSE Frequency(Hz)              = 8000000
-  *            PLL_M                          = 8
-  *            PLL_N                          = 432
-  *            PLL_P                          = 2
-  *            PLL_Q                          = 9
-  *            VDD(V)                         = 3.3
-  *            Main regulator output voltage  = Scale1 mode
-  *            Flash Latency(WS)              = 7
-  * @param  None
-  * @retval None
-  */
-void SetSysClock(void)
-{
-  RCC_HSEConfig(RCC_HSE_ON);
-  
-  if ( RCC_WaitForHSEStartUp() != SUCCESS )
-  {
-    while(1);
-  }
-  
-  RCC_PLLConfig(RCC_PLLSource_HSE, PLL_M, 432, 2, 9);
-  RCC_PLLCmd(ENABLE);
-  
-  while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);
-  
-  /* Activate the OverDrive to reach the 216 MHz Frequency */  
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
-  
-  PWR_OverDriveCmd(ENABLE);
-  
-  while(PWR_GetFlagStatus(PWR_FLAG_ODRDY) == RESET );
-  
-  while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);
-  
-  PWR_OverDriveSWCmd(ENABLE);
-  
-  while(PWR_GetFlagStatus(PWR_FLAG_ODSWRDY) == RESET );
-  
-  FLASH_SetLatency(FLASH_Latency_7);
-  RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);
-  
-  RCC_HCLKConfig(RCC_SYSCLK_Div1);
-  RCC_PCLK1Config(RCC_HCLK_Div4);
-  RCC_PCLK2Config(RCC_HCLK_Div2);
-  
-  SystemCoreClockUpdate();
-}
-
-/**
-  * @brief  Configure the MPU attributes as Write Through for SRAM1/2.
-  * @note   The Base Address is 0x20020000 since this memory interface is the AXI.
-  *         The Region Size is 384KB, it is related to SRAM1 and SRAM2  memory size.
-  * @param  None
-  * @retval None
-  */
-static void MPU_Config(void)
-{
-  MPU_Region_InitTypeDef MPU_InitStruct;
-  
-  /* Disable the MPU */
-  MPU_Disable();
-
-  /* Configure the MPU attributes as WT for SRAM */
-  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress = 0x20020000;
-  MPU_InitStruct.Size = MPU_REGION_SIZE_512KB;
-  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
-  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
-  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
-  MPU_InitStruct.Number = MPU_REGION_NUMBER0;
-  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable = 0x00;
-  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
-
-  MPU_ConfigRegion(&MPU_InitStruct);
-
-  /* Enable the MPU */
-  MPU_Enable(MPU_PRIVILEGED_DEFAULT);
-}
-
-/**
-  * @brief  CPU L1-Cache enable.
-  * @param  None
-  * @retval None
-  */
-static void CPU_CACHE_Enable(void)
-{
-  /* Enable branch prediction */
-  SCB->CCR |= (1 <<18); 
-  __DSB();
-
-  /* Enable I-Cache */
-  SCB_EnableICache();	
-	
-  /* Enable D-Cache */
-  SCB_EnableDCache();
-}
-
-void assert_failed(uint8_t* file, uint32_t line)
-{
-  
 }
 
 /**

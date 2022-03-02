@@ -159,7 +159,7 @@
 #define PWR_FLAG_VOSRDY                 PWR_CSR1_VOSRDY
 #define PWR_FLAG_ODRDY                  PWR_CSR1_ODRDY
 #define PWR_FLAG_ODSWRDY                PWR_CSR1_ODSWRDY
-#define PWR_FLAG_UDRDY                  PWR_CSR1_UDSWRDY
+#define PWR_FLAG_UDRDY                  PWR_CSR1_UDRDY
 
 /* --- FLAG Legacy ---*/
 #define PWR_FLAG_REGRDY                  PWR_FLAG_VOSRDY               

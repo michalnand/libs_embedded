@@ -269,7 +269,7 @@ void TIM_CounterModeConfig(TIM_TypeDef* TIMx, uint32_t TIM_CounterMode)
   uint32_t tmpcr1 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_COUNTER_MODE_SELECT_INSTANCE(TIMx));
   assert_param(IS_TIM_COUNTER_MODE(TIM_CounterMode));
 
   tmpcr1 = TIMx->CR1;
@@ -585,7 +585,7 @@ void TIM_OC1Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   uint32_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
   /* Check the parameters */
-  assert_param(IS_TIM_LIST1_PERIPH(TIMx)); 
+  assert_param(IS_TIM_CC1_INSTANCE(TIMx)); 
   assert_param(IS_TIM_OC_MODE(TIM_OCInitStruct->TIM_OCMode));
   assert_param(IS_TIM_OUTPUT_STATE(TIM_OCInitStruct->TIM_OutputState));
   assert_param(IS_TIM_OC_POLARITY(TIM_OCInitStruct->TIM_OCPolarity));   
@@ -748,7 +748,7 @@ void TIM_OC3Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   uint32_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx)); 
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx)); 
   assert_param(IS_TIM_OC_MODE(TIM_OCInitStruct->TIM_OCMode));
   assert_param(IS_TIM_OUTPUT_STATE(TIM_OCInitStruct->TIM_OutputState));
   assert_param(IS_TIM_OC_POLARITY(TIM_OCInitStruct->TIM_OCPolarity));   
@@ -828,7 +828,7 @@ void TIM_OC4Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   uint32_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx)); 
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx)); 
   assert_param(IS_TIM_OC_MODE(TIM_OCInitStruct->TIM_OCMode));
   assert_param(IS_TIM_OUTPUT_STATE(TIM_OCInitStruct->TIM_OutputState));
   assert_param(IS_TIM_OC_POLARITY(TIM_OCInitStruct->TIM_OCPolarity));   
@@ -894,7 +894,7 @@ void TIM_OC5Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   uint32_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
   /* Check the parameters */
-  assert_param(IS_TIM_LIST4_PERIPH(TIMx)); 
+  assert_param(IS_TIM_CC5_INSTANCE(TIMx)); 
   assert_param(IS_TIM_OC_MODE(TIM_OCInitStruct->TIM_OCMode));
   assert_param(IS_TIM_OUTPUT_STATE(TIM_OCInitStruct->TIM_OutputState));
   assert_param(IS_TIM_OC_POLARITY(TIM_OCInitStruct->TIM_OCPolarity));   
@@ -958,7 +958,7 @@ void TIM_OC6Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct)
   uint32_t tmpccmrx = 0, tmpccer = 0, tmpcr2 = 0;
    
   /* Check the parameters */
-  assert_param(IS_TIM_LIST4_PERIPH(TIMx)); 
+  assert_param(IS_TIM_CC6_INSTANCE(TIMx)); 
   assert_param(IS_TIM_OC_MODE(TIM_OCInitStruct->TIM_OCMode));
   assert_param(IS_TIM_OUTPUT_STATE(TIM_OCInitStruct->TIM_OutputState));
   assert_param(IS_TIM_OC_POLARITY(TIM_OCInitStruct->TIM_OCPolarity));   
@@ -1217,7 +1217,7 @@ void TIM_SetCompare2(TIM_TypeDef* TIMx, uint32_t Compare2)
 void TIM_SetCompare3(TIM_TypeDef* TIMx, uint32_t Compare3)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx));
 
   /* Set the Capture Compare3 Register value */
   TIMx->CCR3 = Compare3;
@@ -1232,7 +1232,7 @@ void TIM_SetCompare3(TIM_TypeDef* TIMx, uint32_t Compare3)
 void TIM_SetCompare4(TIM_TypeDef* TIMx, uint32_t Compare4)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
 
   /* Set the Capture Compare4 Register value */
   TIMx->CCR4 = Compare4;
@@ -1339,7 +1339,7 @@ void TIM_ForcedOC3Config(TIM_TypeDef* TIMx, uint32_t TIM_ForcedAction)
   uint32_t tmpccmr2 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx));
   assert_param(IS_TIM_FORCED_ACTION(TIM_ForcedAction));
 
   tmpccmr2 = TIMx->CCMR2;
@@ -1368,7 +1368,7 @@ void TIM_ForcedOC4Config(TIM_TypeDef* TIMx, uint32_t TIM_ForcedAction)
   uint32_t tmpccmr2 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
   assert_param(IS_TIM_FORCED_ACTION(TIM_ForcedAction));
   tmpccmr2 = TIMx->CCMR2;
 
@@ -1512,7 +1512,7 @@ void TIM_OC3PreloadConfig(TIM_TypeDef* TIMx, uint32_t TIM_OCPreload)
   uint32_t tmpccmr2 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx));
   assert_param(IS_TIM_OCPRELOAD_STATE(TIM_OCPreload));
 
   tmpccmr2 = TIMx->CCMR2;
@@ -1541,7 +1541,7 @@ void TIM_OC4PreloadConfig(TIM_TypeDef* TIMx, uint32_t TIM_OCPreload)
   uint32_t tmpccmr2 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
   assert_param(IS_TIM_OCPRELOAD_STATE(TIM_OCPreload));
 
   tmpccmr2 = TIMx->CCMR2;
@@ -1689,7 +1689,7 @@ void TIM_OC3FastConfig(TIM_TypeDef* TIMx, uint32_t TIM_OCFast)
   uint32_t tmpccmr2 = 0;
   
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx));
   assert_param(IS_TIM_OCFAST_STATE(TIM_OCFast));
 
   /* Get the TIMx CCMR2 register value */
@@ -1719,7 +1719,7 @@ void TIM_OC4FastConfig(TIM_TypeDef* TIMx, uint32_t TIM_OCFast)
   uint32_t tmpccmr2 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
   assert_param(IS_TIM_OCFAST_STATE(TIM_OCFast));
 
   /* Get the TIMx CCMR2 register value */
@@ -1808,7 +1808,7 @@ void TIM_ClearOC3Ref(TIM_TypeDef* TIMx, uint32_t TIM_OCClear)
   uint32_t tmpccmr2 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx));
   assert_param(IS_TIM_OCCLEAR_STATE(TIM_OCClear));
 
   tmpccmr2 = TIMx->CCMR2;
@@ -1837,7 +1837,7 @@ void TIM_ClearOC4Ref(TIM_TypeDef* TIMx, uint32_t TIM_OCClear)
   uint32_t tmpccmr2 = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
   assert_param(IS_TIM_OCCLEAR_STATE(TIM_OCClear));
 
   tmpccmr2 = TIMx->CCMR2;
@@ -1908,27 +1908,6 @@ void TIM_ClearOC6Ref(TIM_TypeDef* TIMx, uint32_t TIM_OCClear)
 
   /* Write to TIMx CCMR3 register */
   TIMx->CCMR3 = tmpccmr3;
-}
-
-
-/**
-  * @brief  Selects the OCReference Clear source.
-  * @param  TIMx: where x can be  1, 2, 3, 4, 5, 8, 9 or 12 to select the TIM 
-  * @param  TIM_OCReferenceClear: specifies the OCReference Clear source.
-  *   This parameter can be one of the following values:
-  *     @arg TIM_OCReferenceClear_ETRF: The internal OCreference clear input is connected to ETRF.
-  *     @arg TIM_OCReferenceClear_OCREFCLR: The internal OCreference clear input is connected to OCREF_CLR input.  
-  * @retval None
-  */
-void TIM_SelectOCREFClear(TIM_TypeDef* TIMx, uint32_t TIM_OCReferenceClear)
-{
-  /* Check the parameters */
-  assert_param(IS_TIM_LIST2_PERIPH(TIMx));
-  assert_param(TIM_OCREFERENCECECLEAR_SOURCE(TIM_OCReferenceClear));
-
-  /* Set the TIM_OCReferenceClear source */
-  TIMx->SMCR &=  (uint32_t)~((uint32_t)TIM_SMCR_OCCS);
-  TIMx->SMCR |=  TIM_OCReferenceClear;
 }
 
 /**
@@ -2053,7 +2032,7 @@ void TIM_OC3PolarityConfig(TIM_TypeDef* TIMx, uint32_t TIM_OCPolarity)
   uint32_t tmpccer = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx));
   assert_param(IS_TIM_OC_POLARITY(TIM_OCPolarity));
 
   tmpccer = TIMx->CCER;
@@ -2107,7 +2086,7 @@ void TIM_OC4PolarityConfig(TIM_TypeDef* TIMx, uint32_t TIM_OCPolarity)
   uint32_t tmpccer = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
   assert_param(IS_TIM_OC_POLARITY(TIM_OCPolarity));
 
   tmpccer = TIMx->CCER;
@@ -2446,7 +2425,7 @@ uint32_t TIM_GetCapture2(TIM_TypeDef* TIMx)
 uint32_t TIM_GetCapture3(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx)); 
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx)); 
 
   /* Get the Capture 3 Register value */
   return TIMx->CCR3;
@@ -2460,7 +2439,7 @@ uint32_t TIM_GetCapture3(TIM_TypeDef* TIMx)
 uint32_t TIM_GetCapture4(TIM_TypeDef* TIMx)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
 
   /* Get the Capture 4 Register value */
   return TIMx->CCR4;
@@ -2529,7 +2508,7 @@ void TIM_SetIC2Prescaler(TIM_TypeDef* TIMx, uint32_t TIM_ICPSC)
 void TIM_SetIC3Prescaler(TIM_TypeDef* TIMx, uint32_t TIM_ICPSC)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC3_INSTANCE(TIMx));
   assert_param(IS_TIM_IC_PRESCALER(TIM_ICPSC));
 
   /* Reset the IC3PSC Bits */
@@ -2553,7 +2532,7 @@ void TIM_SetIC3Prescaler(TIM_TypeDef* TIMx, uint32_t TIM_ICPSC)
 void TIM_SetIC4Prescaler(TIM_TypeDef* TIMx, uint32_t TIM_ICPSC)
 {  
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CC4_INSTANCE(TIMx));
   assert_param(IS_TIM_IC_PRESCALER(TIM_ICPSC));
 
   /* Reset the IC4PSC Bits */
@@ -3264,7 +3243,7 @@ void TIM_ETRClockMode1Config(TIM_TypeDef* TIMx, uint32_t TIM_ExtTRGPrescaler,
   uint32_t tmpsmcr = 0;
 
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CLOCKSOURCE_ETRMODE1_INSTANCE(TIMx));
   assert_param(IS_TIM_EXT_PRESCALER(TIM_ExtTRGPrescaler));
   assert_param(IS_TIM_EXT_POLARITY(TIM_ExtTRGPolarity));
   assert_param(IS_TIM_EXT_FILTER(ExtTRGFilter));
@@ -3309,7 +3288,7 @@ void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint32_t TIM_ExtTRGPrescaler,
                              uint32_t TIM_ExtTRGPolarity, uint32_t ExtTRGFilter)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_CLOCKSOURCE_ETRMODE2_INSTANCE(TIMx));
   assert_param(IS_TIM_EXT_PRESCALER(TIM_ExtTRGPrescaler));
   assert_param(IS_TIM_EXT_POLARITY(TIM_ExtTRGPolarity));
   assert_param(IS_TIM_EXT_FILTER(ExtTRGFilter));
@@ -3457,7 +3436,7 @@ void TIM_SelectOutputTrigger(TIM_TypeDef* TIMx, uint32_t TIM_TRGOSource)
 void TIM_SelectOutputTrigger2(TIM_TypeDef* TIMx, uint32_t TIM_TRGO2Source)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST4_PERIPH(TIMx));
+  assert_param(IS_TIM_TRGO2_INSTANCE(TIMx));
   assert_param(IS_TIM_TRGO2_SOURCE(TIM_TRGO2Source));
 
   /* Reset the MMS Bits */
@@ -3484,7 +3463,7 @@ void TIM_SelectOutputTrigger2(TIM_TypeDef* TIMx, uint32_t TIM_TRGO2Source)
 void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint32_t TIM_SlaveMode)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST2_PERIPH(TIMx));
+  assert_param(IS_TIM_SLAVE_INSTANCE(TIMx));
   assert_param(IS_TIM_SLAVE_MODE(TIM_SlaveMode));
 
   /* Reset the SMS Bits */
@@ -3600,7 +3579,7 @@ void TIM_EncoderInterfaceConfig(TIM_TypeDef* TIMx, uint32_t TIM_EncoderMode,
   uint32_t tmpccer = 0;
     
   /* Check the parameters */
-  assert_param(IS_TIM_LIST3_PERIPH(TIMx));
+  assert_param(IS_TIM_ENCODER_INTERFACE_INSTANCE(TIMx));
   assert_param(IS_TIM_ENCODER_MODE(TIM_EncoderMode));
   assert_param(IS_TIM_IC_POLARITY(TIM_IC1Polarity));
   assert_param(IS_TIM_IC_POLARITY(TIM_IC2Polarity));
@@ -3647,7 +3626,7 @@ void TIM_EncoderInterfaceConfig(TIM_TypeDef* TIMx, uint32_t TIM_EncoderMode,
 void TIM_SelectHallSensor(TIM_TypeDef* TIMx, FunctionalState NewState)
 {
   /* Check the parameters */
-  assert_param(IS_TIM_LIST2_PERIPH(TIMx));
+  assert_param(IS_TIM_HALL_SENSOR_INTERFACE_INSTANCE(TIMx));
   assert_param(IS_FUNCTIONAL_STATE(NewState));
 
   if (NewState != DISABLE)

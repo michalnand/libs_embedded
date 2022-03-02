@@ -1862,20 +1862,18 @@ void USART_OverrunDetectionConfig(USART_TypeDef* USARTx, uint32_t USART_OVRDetec
   * @param  USARTx: where x can be 1, 2, 3 or 4 to select the USART peripheral. 
   * @param  USART_FLAG: specifies the flag to check.
   *          This parameter can be one of the following values:
-  *            @arg USART_FLAG_REACK:  Receive Enable acknowledge flag.
   *            @arg USART_FLAG_TEACK:  Transmit Enable acknowledge flag.
-  *            @arg USART_FLAG_WU:  Wake up flag, not available for  STM32F030 devices.
-  *            @arg USART_FLAG_RWU:  Receive Wake up flag, not available for  STM32F030 devices.
+  *            @arg USART_FLAG_RWU:  Receive Wake up flag.
   *            @arg USART_FLAG_SBK:  Send Break flag.
   *            @arg USART_FLAG_CM:  Character match flag.
   *            @arg USART_FLAG_BUSY:  Busy flag.
   *            @arg USART_FLAG_ABRF:  Auto baud rate flag.
   *            @arg USART_FLAG_ABRE:  Auto baud rate error flag.
-  *            @arg USART_FLAG_EOB:  End of block flag, not available for  STM32F030 devices.
+  *            @arg USART_FLAG_EOB:  End of block flag.
   *            @arg USART_FLAG_RTO:  Receive time out flag.
   *            @arg USART_FLAG_nCTSS:  Inverted nCTS input bit status.
   *            @arg USART_FLAG_CTS:  CTS Change flag.
-  *            @arg USART_FLAG_LBD:  LIN Break detection flag, not available for  STM32F030 devices.
+  *            @arg USART_FLAG_LBD:  LIN Break detection flag.
   *            @arg USART_FLAG_TXE:  Transmit data register empty flag.
   *            @arg USART_FLAG_TC:  Transmission Complete flag.
   *            @arg USART_FLAG_RXNE:  Receive data register not empty flag.

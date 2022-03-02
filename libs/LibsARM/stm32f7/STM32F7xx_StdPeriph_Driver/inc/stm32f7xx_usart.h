@@ -360,9 +360,7 @@ typedef enum
 /** @defgroup USART_Flags 
   * @{
   */
-#define USART_FLAG_REACK                     USART_ISR_REACK
 #define USART_FLAG_TEACK                     USART_ISR_TEACK
-#define USART_FLAG_WU                        USART_ISR_WUF
 #define USART_FLAG_RWU                       USART_ISR_RWU
 #define USART_FLAG_SBK                       USART_ISR_SBKF
 #define USART_FLAG_CM                        USART_ISR_CMF
@@ -373,7 +371,7 @@ typedef enum
 #define USART_FLAG_RTO                       USART_ISR_RTOF
 #define USART_FLAG_nCTSS                     USART_ISR_CTS 
 #define USART_FLAG_CTS                       USART_ISR_CTSIF
-#define USART_FLAG_LBD                       USART_ISR_LBD
+#define USART_FLAG_LBD                       USART_ISR_LBDF
 #define USART_FLAG_TXE                       USART_ISR_TXE
 #define USART_FLAG_TC                        USART_ISR_TC
 #define USART_FLAG_RXNE                      USART_ISR_RXNE
@@ -391,15 +389,14 @@ typedef enum
                              ((FLAG) == USART_FLAG_EOB) || ((FLAG) == USART_FLAG_ABRE) || \
                              ((FLAG) == USART_FLAG_ABRF) || ((FLAG) == USART_FLAG_BUSY) || \
                              ((FLAG) == USART_FLAG_CM) || ((FLAG) == USART_FLAG_SBK) || \
-                             ((FLAG) == USART_FLAG_RWU) || ((FLAG) == USART_FLAG_WU) || \
-                             ((FLAG) == USART_FLAG_TEACK)|| ((FLAG) == USART_FLAG_REACK))
+                             ((FLAG) == USART_FLAG_RWU) || ((FLAG) == USART_FLAG_TEACK))
 
-#define IS_USART_CLEAR_FLAG(FLAG) (((FLAG) == USART_FLAG_WU) || ((FLAG) == USART_FLAG_TC) || \
-                                   ((FLAG) == USART_FLAG_IDLE) || ((FLAG) == USART_FLAG_ORE) || \
-                                   ((FLAG) == USART_FLAG_NE) || ((FLAG) == USART_FLAG_FE) || \
-                                   ((FLAG) == USART_FLAG_LBD) || ((FLAG) == USART_FLAG_CTS) || \
-                                   ((FLAG) == USART_FLAG_RTO) || ((FLAG) == USART_FLAG_EOB) || \
-                                   ((FLAG) == USART_FLAG_CM) || ((FLAG) == USART_FLAG_PE))
+#define IS_USART_CLEAR_FLAG(FLAG) (((FLAG) == USART_FLAG_TC) || ((FLAG) == USART_FLAG_IDLE) || \
+                                   ((FLAG) == USART_FLAG_ORE) || ((FLAG) == USART_FLAG_NE) || \
+                                   ((FLAG) == USART_FLAG_FE) || ((FLAG) == USART_FLAG_LBD) || \
+                                   ((FLAG) == USART_FLAG_CTS) || ((FLAG) == USART_FLAG_RTO) || \
+                                   ((FLAG) == USART_FLAG_EOB) || ((FLAG) == USART_FLAG_CM) || \
+                                   ((FLAG) == USART_FLAG_PE))
 /**
   * @}
   */ 

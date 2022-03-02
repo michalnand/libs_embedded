@@ -1,7 +1,7 @@
 LIBS_EMBEDDED_PATH = $(HOME)/programming/libs_embedded/libs/
 
 
-STD_PERIPH_PATH 	= $(LIBS_EMBEDDED_PATH)/LibsARM/stm32f0/
+STD_PERIPH_PATH 	= $(LIBS_EMBEDDED_PATH)/LibsARM/stm32f7/
 
 MIDDLEWARE_PATH		= $(LIBS_EMBEDDED_PATH)/LibsARM/middleware/
 LIBS_COMMON_PATH	= $(LIBS_EMBEDDED_PATH)/LibsCommon/
@@ -10,17 +10,20 @@ LIBS_SENSORS_PATH	= $(LIBS_EMBEDDED_PATH)/LibsSensors/
 GCCPREFIX	=arm-none-eabi-
 OUTPUT	 	=bin/build
 
-#TARGET 	= -mcpu=cortex-m0 -mthumb -DSTM32F051 -DUSE_STDPERIPH_DRIVER
-TARGET 		= -mcpu=cortex-m0 -mthumb -DSTM32F042 -DUSE_STDPERIPH_DRIVER
+TARGET 		= -mcpu=cortex-m7 -mthumb -mfloat-abi=softfp -fsingle-precision-constant -DSTM32F767xx
+
 LDSCRIPT 	= ./device/ldscript.ld
 
 INC+= -I $(STD_PERIPH_PATH)/CMSIS/Include
-INC+= -I $(STD_PERIPH_PATH)/CMSIS/Device/ST/STM32F0xx/Include
-INC+= -I $(STD_PERIPH_PATH)/STM32F0xx_StdPeriph_Driver/inc
+INC+= -I $(STD_PERIPH_PATH)/Device/ 
+INC+= -I $(STD_PERIPH_PATH)/STM32F7xx_StdPeriph_Driver/inc
 
 INC+= -I $(MIDDLEWARE_PATH)
 INC+= -I $(LIBS_COMMON_PATH)
 INC+= -I $(LIBS_SENSORS_PATH)
+
+INC+= -include ./device/stm32f7xx_conf.h
+
 
 
 INC+= -I ./device
@@ -33,7 +36,8 @@ CXX_SRCS+= $(shell find $(LIBS_COMMON_PATH) -name '*.cpp')
 CXX_SRCS+= $(shell find $(LIBS_SENSORS_PATH) -name '*.cpp')
 
 C_SRCS = $(shell find  ./device -name '*.c')
-C_SRCS+= $(shell find  $(STD_PERIPH_PATH)/STM32F0xx_StdPeriph_Driver/src -name '*.c')
+C_SRCS+= $(shell find  $(STD_PERIPH_PATH)/Device/ -name '*.c')
+C_SRCS+= $(shell find  $(STD_PERIPH_PATH)/STM32F7xx_StdPeriph_Driver/src -name '*.c')
 
 
 CC 		= $(GCCPREFIX)gcc

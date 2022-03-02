@@ -415,23 +415,34 @@ typedef struct
 #define RCC_AHB1Periph_GPIOF             ((uint32_t)RCC_AHB1ENR_GPIOFEN)
 #define RCC_AHB1Periph_GPIOG             ((uint32_t)RCC_AHB1ENR_GPIOGEN)
 #define RCC_AHB1Periph_GPIOH             ((uint32_t)RCC_AHB1ENR_GPIOHEN)
-#define RCC_AHB1Periph_GPIOI             ((uint32_t)RCC_AHB1ENR_GPIOIEN)
-#if defined(STM32F767xx)
+#define RCC_AHB1Periph_GPIOI             ((uint32_t)RCC_AHB1ENR_GPIOIEN) 
+#if defined(GPIOJ)
 #define RCC_AHB1Periph_GPIOJ             ((uint32_t)RCC_AHB1ENR_GPIOJEN)
+#endif /* GPIOJ */
+#if defined(GPIOK)
 #define RCC_AHB1Periph_GPIOK             ((uint32_t)RCC_AHB1ENR_GPIOKEN)
-#endif
+#endif /* GPIOK */
 #define RCC_AHB1Periph_CRC               ((uint32_t)RCC_AHB1ENR_CRCEN)
 #define RCC_AHB1Periph_BKPSRAM           ((uint32_t)RCC_AHB1ENR_BKPSRAMEN)
 #define RCC_AHB1Periph_DTCMRAM           ((uint32_t)RCC_AHB1ENR_DTCMRAMEN)
 #define RCC_AHB1Periph_DMA1              ((uint32_t)RCC_AHB1ENR_DMA1EN)
 #define RCC_AHB1Periph_DMA2              ((uint32_t)RCC_AHB1ENR_DMA2EN)
+#if defined(DMA2D)
 #define RCC_AHB1Periph_DMA2D             ((uint32_t)RCC_AHB1ENR_DMA2DEN)
+#endif /* DMA2D */
+#if defined(ETH)
 #define RCC_AHB1Periph_ETH_MAC           ((uint32_t)RCC_AHB1ENR_ETHMACEN)
 #define RCC_AHB1Periph_ETH_MAC_Tx        ((uint32_t)RCC_AHB1ENR_ETHMACTXEN)
 #define RCC_AHB1Periph_ETH_MAC_Rx        ((uint32_t)RCC_AHB1ENR_ETHMACRXEN)
 #define RCC_AHB1Periph_ETH_MAC_PTP       ((uint32_t)RCC_AHB1ENR_ETHMACPTPEN)
+#endif /* ETH */
 #define RCC_AHB1Periph_OTG_HS            ((uint32_t)RCC_AHB1ENR_OTGHSEN)
 #define RCC_AHB1Periph_OTG_HS_ULPI       ((uint32_t)RCC_AHB1ENR_OTGHSULPIEN)
+
+#define RCC_AHB1Periph_AXI               ((uint32_t)RCC_AHB1LPENR_AXILPEN)
+#define RCC_AHB1Periph_FLITF             ((uint32_t)RCC_AHB1LPENR_FLITFLPEN)
+#define RCC_AHB1Periph_SRAM1             ((uint32_t)RCC_AHB1LPENR_SRAM1LPEN)
+#define RCC_AHB1Periph_SRAM2             ((uint32_t)RCC_AHB1LPENR_SRAM2LPEN)
 
 #define IS_RCC_AHB1_CLOCK_PERIPH(PERIPH) ((((PERIPH) & 0x810BE800) == 0x00) && ((PERIPH) != 0x00))
 #define IS_RCC_AHB1_RESET_PERIPH(PERIPH) ((((PERIPH) & 0xDD1FE800) == 0x00) && ((PERIPH) != 0x00))
@@ -448,12 +459,14 @@ typedef struct
 #define RCC_AHB2Periph_RNG               ((uint32_t)RCC_AHB2ENR_RNGEN)
 #define RCC_AHB2Periph_OTG_FS            ((uint32_t)RCC_AHB2ENR_OTGFSEN)
 
-#if defined (STM32F756xx)
+#if defined(CRYP)
 #define RCC_AHB2Periph_CRYP              ((uint32_t)RCC_AHB2ENR_CRYPEN)
+#endif /* CRYP */
+#if defined(HASH)
 #define RCC_AHB2Periph_HASH              ((uint32_t)RCC_AHB2ENR_HASHEN)
-#endif /* STM32F756xx */
+#endif /* CRYP */
 
-#define IS_RCC_AHB2_PERIPH(PERIPH) ((((PERIPH) & 0xFFFFFF0E) == 0x00) && ((PERIPH) != 0x00))
+#define IS_RCC_AHB2_PERIPH(PERIPH) ((((PERIPH) & 0xFFFFFF0C) == 0x00) && ((PERIPH) != 0x00))
 /**
   * @}
   */ 
@@ -485,7 +498,9 @@ typedef struct
 #define RCC_APB1Periph_WWDG              ((uint32_t)RCC_APB1ENR_WWDGEN)
 #define RCC_APB1Periph_SPI2              ((uint32_t)RCC_APB1ENR_SPI2EN)
 #define RCC_APB1Periph_SPI3              ((uint32_t)RCC_APB1ENR_SPI3EN)
+#if defined(SPDIFRX)
 #define RCC_APB1Periph_SPDIFRX           ((uint32_t)RCC_APB1ENR_SPDIFRXEN)
+#endif /* SPDIFRX */
 #define RCC_APB1Periph_USART2            ((uint32_t)RCC_APB1ENR_USART2EN)
 #define RCC_APB1Periph_USART3            ((uint32_t)RCC_APB1ENR_USART3EN)
 #define RCC_APB1Periph_UART4             ((uint32_t)RCC_APB1ENR_UART4EN)
@@ -493,15 +508,27 @@ typedef struct
 #define RCC_APB1Periph_I2C1              ((uint32_t)RCC_APB1ENR_I2C1EN)
 #define RCC_APB1Periph_I2C2              ((uint32_t)RCC_APB1ENR_I2C2EN)
 #define RCC_APB1Periph_I2C3              ((uint32_t)RCC_APB1ENR_I2C3EN)
+#if defined(I2C4)
 #define RCC_APB1Periph_I2C4              ((uint32_t)RCC_APB1ENR_I2C4EN)
+#endif /* I2C4 */
 #define RCC_APB1Periph_CAN1              ((uint32_t)RCC_APB1ENR_CAN1EN)
+#if defined(CAN2)
 #define RCC_APB1Periph_CAN2              ((uint32_t)RCC_APB1ENR_CAN2EN)
+#endif /* CAN2 */
+#if defined(CAN3)
+#define RCC_APB1Periph_CAN3              ((uint32_t)RCC_APB1ENR_CAN3EN)
+#endif /* CAN3 */
+#if defined(CEC)
 #define RCC_APB1Periph_CEC               ((uint32_t)RCC_APB1ENR_CECEN)
+#endif /* CEC */
 #define RCC_APB1Periph_PWR               ((uint32_t)RCC_APB1ENR_PWREN)
 #define RCC_APB1Periph_DAC               ((uint32_t)RCC_APB1ENR_DACEN)
 #define RCC_APB1Periph_UART7             ((uint32_t)RCC_APB1ENR_UART7EN)
 #define RCC_APB1Periph_UART8             ((uint32_t)RCC_APB1ENR_UART8EN)
-#define IS_RCC_APB1_PERIPH(PERIPH) ((((PERIPH) & 0x00003600) == 0x00) && ((PERIPH) != 0x00))
+#if defined(RCC_APB1ENR_RTCEN)
+#define RCC_APB1Periph_RTC               ((uint32_t)RCC_APB1ENR_RTCEN)
+#endif /* RCC_APB1ENR_RTCEN */
+#define IS_RCC_APB1_PERIPH(PERIPH) ((((PERIPH) & 0x00001000) == 0x00) && ((PERIPH) != 0x00))
 /**
   * @}
   */ 
@@ -513,11 +540,13 @@ typedef struct
 #define RCC_APB2Periph_TIM8              ((uint32_t)RCC_APB2ENR_TIM8EN)
 #define RCC_APB2Periph_USART1            ((uint32_t)RCC_APB2ENR_USART1EN)
 #define RCC_APB2Periph_USART6            ((uint32_t)RCC_APB2ENR_USART6EN)
-#define RCC_APB2Periph_ADC               ((uint32_t)RCC_APB2ENR_ADC1EN)
 #define RCC_APB2Periph_ADC1              ((uint32_t)RCC_APB2ENR_ADC1EN)
 #define RCC_APB2Periph_ADC2              ((uint32_t)RCC_APB2ENR_ADC2EN)
 #define RCC_APB2Periph_ADC3              ((uint32_t)RCC_APB2ENR_ADC3EN)
 #define RCC_APB2Periph_SDMMC1            ((uint32_t)RCC_APB2ENR_SDMMC1EN)
+#if defined(SDMMC2)
+#define RCC_APB2Periph_SDMMC2            ((uint32_t)RCC_APB2ENR_SDMMC2EN)
+#endif /* SDMMC2 */
 #define RCC_APB2Periph_SPI1              ((uint32_t)RCC_APB2ENR_SPI1EN)
 #define RCC_APB2Periph_SPI4              ((uint32_t)RCC_APB2ENR_SPI4EN)
 #define RCC_APB2Periph_SYSCFG            ((uint32_t)RCC_APB2ENR_SYSCFGEN)
@@ -525,13 +554,30 @@ typedef struct
 #define RCC_APB2Periph_TIM10             ((uint32_t)RCC_APB2ENR_TIM10EN)
 #define RCC_APB2Periph_TIM11             ((uint32_t)RCC_APB2ENR_TIM11EN)
 #define RCC_APB2Periph_SPI5              ((uint32_t)RCC_APB2ENR_SPI5EN)
+#if defined(SPI6)
 #define RCC_APB2Periph_SPI6              ((uint32_t)RCC_APB2ENR_SPI6EN)
+#endif /* SPI6 */
 #define RCC_APB2Periph_SAI1              ((uint32_t)RCC_APB2ENR_SAI1EN)
 #define RCC_APB2Periph_SAI2              ((uint32_t)RCC_APB2ENR_SAI2EN)
+#if defined(LTDC)
 #define RCC_APB2Periph_LTDC              ((uint32_t)RCC_APB2ENR_LTDCEN)
+#endif /* LTDC */
+#if defined(DSI)
+#define RCC_APB2Periph_DSI               ((uint32_t)RCC_APB2ENR_DSIEN)
+#endif /* DSI */
+#if defined(DFSDM1_Channel0)
+#define RCC_APB2Periph_DFSDM1            ((uint32_t)RCC_APB2ENR_DFSDM1EN)
+#endif /* DFSDM1_Channel0 */
+#if defined(MDIOS)
+#define RCC_APB2Periph_MDIO              ((uint32_t)RCC_APB2ENR_MDIOEN)
+#endif /* MDIOS */
+#if defined(USB_HS_PHYC)
+#define RCC_APB2Periph_OTGPHYC           ((uint32_t)RCC_APB2ENR_OTGPHYCEN)
+#endif /* USB_HS_PHYC */
+#define RCC_APB2Periph_ADC               ((uint32_t)RCC_APB2RSTR_ADCRST)
 
-#define IS_RCC_APB2_PERIPH(PERIPH) ((((PERIPH) & 0xF30880CC) == 0x00) && ((PERIPH) != 0x00))
-#define IS_RCC_APB2_RESET_PERIPH(PERIPH) ((((PERIPH) & 0xF30886CC) == 0x00) && ((PERIPH) != 0x00))
+#define IS_RCC_APB2_PERIPH(PERIPH) ((((PERIPH) & 0x9308804C) == 0x00) && ((PERIPH) != 0x00))
+#define IS_RCC_APB2_RESET_PERIPH(PERIPH) ((((PERIPH) & 0x9308864C) == 0x00) && ((PERIPH) != 0x00))
 
 /**
   * @}

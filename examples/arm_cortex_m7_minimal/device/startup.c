@@ -22,7 +22,7 @@ void __attribute__((interrupt("IRQ"))) Default_Handler()
     }
 }
 
-void Reset_Handler() __attribute__((naked, aligned(2)));
+void Reset_Handler()                    __attribute__((naked, aligned(2)));
 /* Weak definitions of handlers point to Default_Handler if not implemented */
 void NMI_Handler()                      __attribute__ ((weak, alias("Default_Handler")));
 void HardFault_Handler()                __attribute__ ((weak, alias("Default_Handler")));

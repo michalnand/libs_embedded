@@ -168,11 +168,9 @@ void RCC_DeInit(void)
   SET_BIT(RCC->PLLI2SCFGR,  RCC_PLLI2SCFGR_PLLI2SN_6 | RCC_PLLI2SCFGR_PLLI2SN_7 | RCC_PLLI2SCFGR_PLLI2SR_1);
 
   /* Reset PLLSAICFGR register */
-#if defined(STM32F767xx)  
   CLEAR_REG(RCC->PLLSAICFGR);
   SET_BIT(RCC->PLLSAICFGR,  RCC_PLLSAICFGR_PLLSAIR_1 | RCC_PLLSAICFGR_PLLSAIQ_2 | RCC_PLLSAICFGR_PLLSAIN_7 | RCC_PLLSAICFGR_PLLSAIN_6);
-#endif
-
+ 
   /* Reset HSEBYP bit */
   CLEAR_BIT(RCC->CR, RCC_CR_HSEBYP);
 
@@ -1262,10 +1260,8 @@ void RCC_LTDCCLKDivConfig(uint32_t RCC_PLLSAIDivR)
   
   tmpreg = RCC->DCKCFGR1;
 
-#if defined(STM32F767xx)
   /* Clear PLLSAIDIVR[2:0] bits */
   tmpreg &= ~RCC_DCKCFGR1_PLLSAIDIVR;
-#endif
 
   /* Set PLLSAIDIVR values */
   tmpreg |= RCC_PLLSAIDivR;
@@ -1737,6 +1733,10 @@ void RCC_APB2PeriphResetCmd(uint32_t RCC_APB2Periph, FunctionalState NewState)
   *            @arg RCC_AHB1Periph_ETH_MAC_PTP: Ethernet PTP clock
   *            @arg RCC_AHB1Periph_OTG_HS:      USB OTG HS clock
   *            @arg RCC_AHB1Periph_OTG_HS_ULPI: USB OTG HS ULPI clock
+  *            @arg RCC_AHB1Periph_AXI:         
+  *            @arg RCC_AHB1Periph_FLITF:       
+  *            @arg RCC_AHB1Periph_SRAM1:       
+  *            @arg RCC_AHB1Periph_SRAM2:       
   * @param  NewState: new state of the specified peripheral clock.
   *          This parameter can be: ENABLE or DISABLE.
   * @retval None
@@ -1995,8 +1995,7 @@ void RCC_CECClockSourceConfig(uint8_t RCC_ClockSource)
 {
   /* Check the parameters */
   assert_param(IS_RCC_CEC_CLOCKSOURCE(RCC_ClockSource));
-
-#if defined(STM32F767xx)
+  
   if(RCC_ClockSource == RCC_CECCLKSource_LSE)
   {
     SET_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_CECSEL);
@@ -2005,7 +2004,6 @@ void RCC_CECClockSourceConfig(uint8_t RCC_ClockSource)
   {
     CLEAR_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_CECSEL);
   }
-#endif
 }
 
 /**
@@ -2050,7 +2048,6 @@ void RCC_I2CClockSourceConfig(I2C_TypeDef * I2Cx, uint32_t RCC_ClockSource)
     /* Set new I2C3 clock source */
     RCC->DCKCFGR2 |= RCC_ClockSource << 4;
   }
-#if defined(STM32F767xx)
   else if(I2Cx == I2C4)
   {
     /* Clear I2C4 clock source selection source bits */
@@ -2058,7 +2055,6 @@ void RCC_I2CClockSourceConfig(I2C_TypeDef * I2Cx, uint32_t RCC_ClockSource)
     /* Set new I2C4 clock source */
     RCC->DCKCFGR2 |= RCC_ClockSource << 6;
   }
-#endif
 }
 
 /**

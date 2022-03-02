@@ -2,8 +2,6 @@
   ******************************************************************************
   * @file    stm32f767xx.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    30-December-2016
   * @brief   CMSIS Cortex-M7 Device Peripheral Access Layer Header File.
   *
   *          This file contains:
@@ -10128,7 +10126,7 @@ typedef struct
 #define PWR_CSR1_UDRDY_Pos      (18U)                                          
 #define PWR_CSR1_UDRDY_Msk      (0x3U << PWR_CSR1_UDRDY_Pos)                   /*!< 0x000C0000 */
 #define PWR_CSR1_UDRDY          PWR_CSR1_UDRDY_Msk                             /*!< Under Drive ready                                */
-#define PWR_CSR1_UDSWRDY        PWR_CSR1_UDRDY
+
 
 /********************  Bit definition for PWR_CR2 register  ********************/
 #define PWR_CR2_CWUPF1_Pos      (0U)                                           
@@ -13998,7 +13996,6 @@ typedef struct
 #define TIM_SMCR_SMS_1            (0x00002U << TIM_SMCR_SMS_Pos)               /*!< 0x00000002 */
 #define TIM_SMCR_SMS_2            (0x00004U << TIM_SMCR_SMS_Pos)               /*!< 0x00000004 */
 #define TIM_SMCR_SMS_3            (0x10000U << TIM_SMCR_SMS_Pos)               /*!< 0x00010000 */
-#define TIM_SMCR_OCCS             (0x00008U << TIM_SMCR_SMS_Pos)               /*!< OCREF clear selection */
 
 #define TIM_SMCR_TS_Pos           (4U)                                         
 #define TIM_SMCR_TS_Msk           (0x7U << TIM_SMCR_TS_Pos)                    /*!< 0x00000070 */
@@ -15060,7 +15057,6 @@ typedef struct
 #define USART_ISR_LBDF_Pos            (8U)                                     
 #define USART_ISR_LBDF_Msk            (0x1U << USART_ISR_LBDF_Pos)             /*!< 0x00000100 */
 #define USART_ISR_LBDF                USART_ISR_LBDF_Msk                       /*!< LIN Break Detection Flag            */
-#define USART_ISR_LBD                 USART_ISR_LBDF                           /*!< LIN Break Detection Flag            */
 #define USART_ISR_CTSIF_Pos           (9U)                                     
 #define USART_ISR_CTSIF_Msk           (0x1U << USART_ISR_CTSIF_Pos)            /*!< 0x00000200 */
 #define USART_ISR_CTSIF               USART_ISR_CTSIF_Msk                      /*!< CTS interrupt flag                  */
@@ -15091,15 +15087,9 @@ typedef struct
 #define USART_ISR_RWU_Pos             (19U)                                    
 #define USART_ISR_RWU_Msk             (0x1U << USART_ISR_RWU_Pos)              /*!< 0x00080000 */
 #define USART_ISR_RWU                 USART_ISR_RWU_Msk                        /*!< Receive Wake Up from mute mode Flag */
-#define USART_ISR_WUF_Pos             (20U)                                    
-#define USART_ISR_WUF_Msk             (0x1U << USART_ISR_WUF_Pos)              /*!< 0x00100000 */
-#define USART_ISR_WUF                 USART_ISR_WUF_Msk                        /*!< Wake Up from stop mode Flag         */
 #define USART_ISR_TEACK_Pos           (21U)                                    
 #define USART_ISR_TEACK_Msk           (0x1U << USART_ISR_TEACK_Pos)            /*!< 0x00200000 */
 #define USART_ISR_TEACK               USART_ISR_TEACK_Msk                      /*!< Transmit Enable Acknowledge Flag    */
-#define USART_ISR_REACK_Pos           (22U)                                    
-#define USART_ISR_REACK_Msk           (0x1U << USART_ISR_REACK_Pos)            /*!< 0x00400000 */
-#define USART_ISR_REACK               USART_ISR_REACK_Msk                      /*!< Receive Enable Acknowledge Flag     */
 
 /*******************  Bit definition for USART_ICR register  ******************/
 #define USART_ICR_PECF_Pos            (0U)                                     
