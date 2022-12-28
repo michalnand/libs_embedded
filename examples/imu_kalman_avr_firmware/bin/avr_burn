@@ -1,0 +1,3 @@
+#sudo avrdude -c arduino -p atmega328p -P /dev/ttyUSB0 -U flash:w:build.hex
+
+sudo avrdude -c arduino -b57600 -p atmega328p -P /dev/tty.usbserial-11130 -U flash:w:build.hex

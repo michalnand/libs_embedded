@@ -10,7 +10,7 @@ IMU::IMU()
     this->alpha = 0.1;
 }
 
-IMU::~IMU()
+IMU::~IMU() 
 {
 
 }
@@ -46,13 +46,16 @@ Vect3d<float> IMU::step(float ax, float ay, float az, float gx, float gy, float 
     gyro_result = convert_euler_angles(result.x, result.y, gx, gy, gz);
 
     //complementary filter
-    result.x = alpha*acc_result.x   + (1.0 - alpha)*(result.x + gyro_result.x*dt);
-    result.y = alpha*acc_result.y   + (1.0 - alpha)*(result.y + gyro_result.y*dt);
+    //result.x = alpha*acc_result.x   + (1.0 - alpha)*(result.x + gyro_result.x*dt);
+    //result.y = alpha*acc_result.y   + (1.0 - alpha)*(result.y + gyro_result.y*dt);
+    result.x = k_roll.step(acc_result.x, gyro_result.x, 0.1, 0.01, dt);
+    result.y = k_pitch.step(acc_result.y, gyro_result.y, 0.1, 0.01, dt);
     result.z = result.z             + gyro_result.z*dt;
     
-
+ 
     return result;
 }
+
 
 
 Vect3d<float> IMU::convert_euler_angles(float phi, float theta, float p, float q, float r)

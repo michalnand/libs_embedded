@@ -2,6 +2,7 @@
 #define _IMU_H_
 
 #include "fmath.h"
+#include "kalman_filter.h"
 
 #define G_const ((float)9.8067)
 
@@ -25,6 +26,8 @@ class IMU
 
     private:
         float alpha;
+
+        KalmanFilter k_roll, k_pitch;
 };
 
 #endif
