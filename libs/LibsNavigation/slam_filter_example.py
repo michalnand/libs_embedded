@@ -33,12 +33,19 @@ def create_map(height, width, count = 50, max_length = 20, tile_size = 10, noise
             y+= (dy + noise*numpy.random.randn()) *tile_size
             x+= (dx + noise*numpy.random.randn())*tile_size
 
+            if y < 0 or y >= height:
+                break
+
+            if x < 0 or x >= width:
+                break
+
+
     landmarks = numpy.array(landmarks).astype(numpy.float32)
 
     return landmarks
 
-def render(landmarks, filter, z_indices, height, width, t_ref, t_pred, max_range, writer = None, element_size = 5):
-    result_im        = numpy.zeros((3, height, width))
+def render(landmarks, landmarks_estimated, filter, z_indices, height, width, t_ref, t_pred, max_range, writer = None, element_size = 5):
+    result_im        = numpy.zeros((3, height, width*2))
 
     
     py = filter.particles[:, 0].astype(int)
@@ -57,6 +64,14 @@ def render(landmarks, filter, z_indices, height, width, t_ref, t_pred, max_range
         x = int(landmarks[i][1])
 
         result_im = cv2.rectangle(result_im, (x - element_size, y - element_size), (x + element_size, y + element_size), (0.0, 0.5, 0.0), -1)
+
+    for i in range(landmarks_estimated.shape[0]):
+        y = int(landmarks_estimated[i][0])
+        x = int(landmarks_estimated[i][1]) + width
+
+        result_im = cv2.rectangle(result_im, (x - element_size, y - element_size), (x + element_size, y + element_size), (0.0, 0.5, 0.0), -1)
+
+
 
     if len(t_ref) > 0:
         robot_y = int(t_ref[-1][1])
@@ -77,8 +92,6 @@ def render(landmarks, filter, z_indices, height, width, t_ref, t_pred, max_range
 
             result_im = cv2.line(result_im, (robot_x, robot_y), (sx, sy), (1, 1, 1), 1) 
 
-        result_im = cv2.putText(result_im, 'robot', (robot_x + 5, robot_y + 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (1, 0, 0), 2, cv2.LINE_AA)
-
     if len(t_pred) > 0:
         robot_y = int(t_pred[-1][1])
         robot_x = int(t_pred[-1][0])
@@ -87,9 +100,8 @@ def render(landmarks, filter, z_indices, height, width, t_ref, t_pred, max_range
 
         points = numpy.array(t_pred)
         points = points.reshape(-1,1,2)
-        result_im = cv2.polylines(result_im, [points], False, (0, 0, 1), 2)
+        result_im = cv2.polylines(result_im, [points], False, (0, 0, 1), 1)
 
-        result_im = cv2.putText(result_im, 'estimated', (robot_x + 5, robot_y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 1), 2, cv2.LINE_AA)
 
     cv2.imshow("monte carlo localisation", result_im)
     cv2.waitKey(1)
@@ -107,15 +119,15 @@ if __name__ == "__main__":
     particles_count = 1024
     max_range       = 100
 
-    landmarks       = create_map(height, width, 16)
+    landmarks           = create_map(height, width, 30)
+    landmarks_estimated = numpy.zeros((100, 2))
     
-    distance_variance = 0.8
-    filter = ParticleFilterLandmarks(landmarks, height, width, max_range, distance_variance, particles_count)
+    filter = ParticleFilterLandmarks(landmarks, height, width, max_range, particles_count)
 
 
     robot_y = height*numpy.random.rand()
     robot_x = height*numpy.random.rand()
-    robot_a = 0.0
+    robot_a = 2.0*numpy.pi*numpy.random.rand()
 
     ds      = 1.0
     d_angle = 0.0
@@ -125,9 +137,8 @@ if __name__ == "__main__":
     #fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
     #writer = cv2.VideoWriter("filter_video.mp4", fourcc, 25.0, (width, height)) 
     writer = None
-
-    while True:
     
+    while True:
 
         if numpy.random.rand() < 0.03:
             if numpy.random.rand() < 0.5:
@@ -136,7 +147,9 @@ if __name__ == "__main__":
                 ds = -1.0
 
             if numpy.random.rand() < 0.5:
-                d_angle = 0.02*numpy.random.randn()
+                d_angle = 0.0
+            else:
+                d_angle = 0.1*numpy.random.randn()
         
         robot_a+= d_angle
 
@@ -146,7 +159,7 @@ if __name__ == "__main__":
         robot_y+= dy
         robot_x+= dx
 
-        if cnt%5000 == 0: 
+        if cnt%1000 == 0: 
             robot_y = height*numpy.random.rand()
             robot_x = height*numpy.random.rand()
             robot_a = 2.0*numpy.pi*numpy.random.rand()
@@ -177,22 +190,17 @@ if __name__ == "__main__":
         z           = dist[z_indices]
         z           = numpy.sort(z)
 
-        #z_count = min(len(z), 5)
-        #z = z[0:z_count]
-
         res_y, res_x = filter.step(dy, dx, z)
 
-        if cnt%100 == 0: 
-            print(robot_y, robot_x, res_y, res_x)
-
-        if cnt%2 == 0:
+        if cnt%1 == 0:
             t_ref.append([int(robot_x), int(robot_y)])
             t_pred.append([int(res_x), int(res_y)])
-            render(landmarks, filter, z_indices, height, width, t_ref, t_pred, max_range, writer)
 
         cnt+= 1
 
-        #if cnt>= 3000:
+        render(landmarks, landmarks_estimated, filter, z_indices, height, width, t_ref, t_pred, max_range, writer)
+
+        #if cnt>= 1000:
         #    break
         
     

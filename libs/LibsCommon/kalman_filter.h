@@ -15,7 +15,7 @@ class KalmanFilter
                 dz  : velocity measurement
                 pz  : position measurement uncertaininty
                 pdz : velocity measurement uncertaininty
-                dt  : time between two measurements [s]
+                dt  : time between two measurements [ms]
 
             returns:
                 z^  : filtered z

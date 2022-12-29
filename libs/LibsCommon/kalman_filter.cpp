@@ -14,6 +14,11 @@ KalmanFilter::~KalmanFilter()
 
 float KalmanFilter::step(float z, float dz, float pz, float pdz, float dt)
 {
+    if (dt == 0)
+        dt  =1;
+        
+    dt = 0.001*dt;
+
     //store prev x_hat
     this->x_hat_prev = this->x_hat;
 
