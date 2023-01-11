@@ -12,10 +12,11 @@ class IMU
     public:
         IMU();
         virtual ~IMU();
-        void init(float alpha);
+        void init(); 
 
         //accelerometer input   : ax, ay, az;   [m/s^2] 
         //gyroscope input       : gx, gy, gz;   [rad/s]
+        //dt                    : [ms]
         //returns               : x, y, z;      [rad]
         Vect3d<float> step(float ax, float ay, float az, float gx, float gy, float gz, float dt = 0.01);
 

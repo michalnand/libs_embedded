@@ -112,7 +112,6 @@ int main(void)
 
     steps++;
 
-
     timer.delay_ms(5);
   }
 

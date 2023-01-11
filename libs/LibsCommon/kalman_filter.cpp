@@ -14,8 +14,8 @@ KalmanFilter::~KalmanFilter()
 
 float KalmanFilter::step(float z, float dz, float pz, float pdz, float dt)
 {
-    if (dt == 0)
-        dt  =1;
+    if (dt < 0.000001)
+        dt  = 0.000001;
         
     dt = 0.001*dt;
 
@@ -25,7 +25,7 @@ float KalmanFilter::step(float z, float dz, float pz, float pdz, float dt)
     //1, prediction
     //predict the state and uncertaininty
     this->x_hat  = this->x_hat + dz*dt;
-    this->p      = this->p + (dt*dt)*pdz;
+    this->p      = this->p + pdz*dt*dt;
 
     //2, kalman gain
     float k      = this->p/(this->p + pz);

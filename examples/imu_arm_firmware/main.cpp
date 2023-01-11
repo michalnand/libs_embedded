@@ -46,7 +46,7 @@ int main(void)
   timer.init(); 
 
 
-  TI2C<TGPIOA, 0, 1, 20> i2c;
+  TI2C<TGPIOA, 3, 4, 20> i2c;
   i2c.init();     
 
 
@@ -58,22 +58,19 @@ int main(void)
   timer.delay_ms(1000);
 
   IMU imu;
-  imu.init(0.1);
+  imu.init();
  
   uint32_t time_now  = 0;
   uint32_t time_prev = 0;
   int cnt = 0;
   
-  float mps = 0;
-
   while (1)
-  { 
+  {  
     time_prev  = time_now;
     time_now   = timer.get_time();
 
-    float   dt = 0.001*(time_now - time_prev);
+    float   dt = time_now - time_prev;
 
-    mps = 0.9*mps + 0.1*1.0/dt;
 
     acc_gyro.read();  
 
@@ -94,16 +91,14 @@ int main(void)
     float pitch   = result.y*RAD_TO_DEG;
     float yaw     = result.z*RAD_TO_DEG;
  
-    if ((cnt%20) == 0)
+    if ((cnt%10) == 0)
     {   
       led_pin = 1;   
-      terminal << "#JSON\n";
-      terminal << "{\n";
-      terminal << "\"imu_sensor\" : " << "[" << roll << ", " << pitch << ", " << yaw << ", " << mps << "]\n";
-      terminal << "}";
-      terminal << "#END\n\n\n";
+      terminal << roll << " " << pitch << " " << yaw << "\n";
       led_pin = 0;
     }
+
+    timer.delay_ms(5);
 
 
     cnt++;

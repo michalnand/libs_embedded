@@ -13,8 +13,8 @@ class KalmanFilter
             input : 
                 z   : position measurement
                 dz  : velocity measurement
-                pz  : position measurement uncertaininty
-                pdz : velocity measurement uncertaininty
+                pz  : position measurement uncertaininty, variance
+                pdz : velocity measurement uncertaininty (process variance), variance
                 dt  : time between two measurements [ms]
 
             returns:

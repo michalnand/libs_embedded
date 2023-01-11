@@ -1,0 +1,163 @@
+import numpy
+import cv2
+from scipy import signal
+
+
+class VisualOdometry:
+
+    def __init__(self):
+        self.detector   =   cv2.FastFeatureDetector_create(threshold=10, nonmaxSuppression=True)
+        self.frame_prev =   numpy.zeros((1, 1))
+        self.frame_now  =   numpy.zeros((1, 1))
+
+
+
+    def step(self, frame, window_size=11):
+
+        self.frame_prev  = self.frame_now.copy()
+        self.frame_now   = frame
+
+    
+        #1, detect keypoints   
+        frame_uint8 = (255*frame).astype(numpy.uint8)
+        frame_uint8 = cv2.blur(frame_uint8,(5,5))
+        keypoints = self.detector.detect(frame_uint8)
+        keypoints =  numpy.array([x.pt for x in keypoints], dtype=numpy.float32).reshape(-1, 1, 2)
+        keypoints = keypoints[:,0,:].astype(numpy.int32)
+
+
+        keypoints_prev = keypoints.copy()
+
+        flow = None
+        if self.frame_prev.shape == self.frame_now.shape and keypoints.shape[0] > 10:
+            #2, compute optical flow
+            flow  = self._optical_flow(self.frame_now, self.frame_prev, keypoints, window_size)
+            keypoints_prev    = keypoints + flow
+
+            '''
+            #3, compute fundamental matrix
+            cameraMatrix = numpy.eye(3)
+
+            f, mask = cv2.findEssentialMat(keypoints, keypoints_prev, focal=1.0, pp=(0., 0.), method=cv2.RANSAC, prob=0.999)
+		    
+            _, R, t, _ = cv2.recoverPose(f, keypoints, keypoints_prev) 
+
+            self.cur_t = self.cur_t + 2.0*self.cur_R.dot(t) 
+            self.cur_R = R.dot(self.cur_R)
+            '''
+
+        return keypoints, keypoints_prev
+
+    '''
+    lucas kanade method
+        fa, fb : two consectuctive frames, grayscale images, shape = (height, width)
+        key_points : list of 2D points to be used, shape = (points_count, 2)
+        window_size: kernel size arround key point
+    '''
+    def _optical_flow(self, fa, fb, key_points, window_size):
+        half_window = window_size//2
+        
+        fx, fy, ft = self._compute_derivatives(fa, fb)
+
+        result = numpy.zeros((key_points.shape[0], 2), dtype=numpy.float32)
+
+        key_points[:, 0] = numpy.clip(key_points[:, 0], half_window, fa.shape[1] - half_window)
+        key_points[:, 1] = numpy.clip(key_points[:, 1], half_window, fa.shape[0] - half_window)
+
+        
+        #process all keypoints
+        for i in range(key_points.shape[0]):
+            x  = key_points[i][0]
+            y  = key_points[i][1]
+
+            Ix = fx[y - half_window:y + half_window, x - half_window:x + half_window].flatten()
+            Iy = fy[y - half_window:y + half_window, x - half_window:x + half_window].flatten()
+            It = ft[y - half_window:y + half_window, x - half_window:x + half_window].flatten()
+                
+            A       = numpy.transpose(numpy.array([Ix, Iy]))
+            tmp     = numpy.dot(numpy.transpose(A), A)
+            pinv    = numpy.linalg.pinv(tmp)
+            b       = numpy.dot(pinv, numpy.transpose(A))
+
+            It      = -1 * It
+            u       = numpy.dot(b, It) 
+
+            result[i] = u
+        
+        return result
+
+       
+            
+
+    def _compute_derivatives(self, fa, fb):
+
+        '''
+        kernel_x = numpy.array([[-1., 1.], [-1., 1.]])
+        kernel_y = numpy.array([[-1., -1.], [1., 1.]])
+        kernel_t = numpy.array([[1., 1.], [1., 1.]])
+
+        fx = signal.convolve2d(fa, kernel_x, boundary='symm', mode='same') + signal.convolve2d(fb, kernel_x, boundary='symm', mode='same')
+        fy = signal.convolve2d(fa, kernel_y, boundary='symm', mode='same') + signal.convolve2d(fb, kernel_y, boundary='symm', mode='same')
+        ft = signal.convolve2d(fa, kernel_t, boundary='symm', mode='same') + signal.convolve2d(fb, -kernel_t, boundary='symm', mode='same')
+        '''
+
+        fx = numpy.zeros(fa.shape, dtype=numpy.float32)
+        fy = numpy.zeros(fa.shape, dtype=numpy.float32)
+        ft = numpy.zeros(fa.shape, dtype=numpy.float32)
+    
+        fx[1:-1, 1:-1] = (fa[1:-1, 2:] - fa[1:-1, :-2])
+        fy[1:-1, 1:-1] = (fa[2:, 1:-1] - fa[:-2, 1:-1])
+        ft[1:-1, 1:-1] = fa[1:-1, 1:-1] - fb[1:-1, 1:-1]
+        
+
+        return fx, fy, ft
+
+    """
+    Eight point estimation of fundamental matrix
+    :param fa: Previous frame matched key points
+    :param fb: Current frame matched key points
+    :return: Fundamental matrix, inlier points
+    """
+    def _eight_point_estimation(self, fa, fb):
+        points_count = fa.shape[0]
+
+        new_col = numpy.ones((points_count, 1))
+        fa_tmp  = numpy.hstack([fa, new_col])
+
+        new_col = numpy.ones((fb.shape[0], 1))
+        fb_tmp  = numpy.hstack([fb, new_col])
+
+        A = numpy.zeros((points_count, 9))
+
+       
+        for i in range(points_count):
+            A[i, :] = numpy.kron(fa_tmp[i, :], fb_tmp[i, :])
+        
+
+        # Pick the smallest eigenvector
+        u, s, vh = numpy.linalg.svd(A)
+        v = vh.T
+        f = v[:, -1].reshape(3, 3)
+
+        # Force essential matrix constraint
+        U, S, V = numpy.linalg.svd(f)
+        F = U.dot(numpy.diag([1, 1, 0]).dot(V))
+
+        return F
+
+    def _eight_point_estimation_builtin(self, fa, fb):
+        """
+        Open CV Eight point estimation of fundamental matrix
+        :param fa: Previous frame matched key points
+        :param fb: Current frame matched key points
+        :return: Fundamental matrix, inlier points
+        """
+
+        _, inliers = cv2.findFundamentalMat(fa, fb, cv2.FM_RANSAC)
+        F, _ = cv2.findFundamentalMat(
+            fa[inliers.ravel() == 1], 
+            fb[inliers.ravel() == 1],
+            cv2.FM_8POINT,
+        )
+
+        return F, inliers
