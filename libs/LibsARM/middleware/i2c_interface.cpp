@@ -13,11 +13,30 @@ I2C_Interface::~I2C_Interface()
 }
 
 
+unsigned char I2C_Interface::check(unsigned char dev_adr)
+{
+  start();
+  unsigned char ack_res = write(dev_adr);
+  stop(); 
+
+  return ack_res;
+}
+
 void I2C_Interface::write_reg(unsigned char dev_adr, unsigned char reg_adr, unsigned char value)
 {
   start();
   write(dev_adr);  //slave address, write command
   write(reg_adr);  //send reg address
+  write(value);
+  stop();
+}
+
+void I2C_Interface::write_reg_extended(unsigned char dev_adr, unsigned int reg_adr, unsigned char value)
+{ 
+  start();
+  write(dev_adr);  //slave address, write command
+  write((unsigned char)(reg_adr >> 8));   //send reg address, upper
+  write((unsigned char)(reg_adr & 0xFF)); //send reg address, lower
   write(value);
   stop();
 }
@@ -51,6 +70,24 @@ unsigned char I2C_Interface::read_reg(unsigned char dev_adr, unsigned char reg_a
   start();
   write(dev_adr);  // slave address, write command
   write(reg_adr);  // send reg address
+
+  start();
+  write(dev_adr|0x01); // slave address, read command
+  res = read(0);   // read data
+  stop();
+
+  return res;
+}
+
+unsigned char I2C_Interface::read_reg_extended(unsigned char dev_adr, unsigned int reg_adr)
+{
+  unsigned char res;
+
+  start();
+  write(dev_adr);  // slave address, write command
+
+  write((unsigned char)(reg_adr >> 8));   //send reg address, upper
+  write((unsigned char)(reg_adr & 0xFF)); //send reg address, lower
 
   start();
   write(dev_adr|0x01); // slave address, read command

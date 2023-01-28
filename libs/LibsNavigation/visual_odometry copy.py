@@ -173,18 +173,19 @@ def render_trajectory(trajectory, height = 400, width = 400):
 
 
 if __name__ == "__main__":
-    height_orig = 1080
-    width_orig  = 1920
+    height_orig = 370
+    width_orig  = 1226
     
-    height  = 1080//4
-    width   = 1920//4 
+    height  = 370 
+    width   = 1226 
     
-    focal_y  = 1240*height/height_orig
-    focal_x  = 1240*width/width_orig
+    focal_y  = 707*height/height_orig
+    focal_x  = 707*width/width_orig
 
     count   = 200
+    path    = "/Users/michal/Movies/segmentation/kitty_odometry/03/"
 
-    cap = cv2.VideoCapture("/Users/michal/Movies/segmentation/park2.mp4")
+    images  = load_images(path + "image_l/", count, height, width)
 
 
     cur_pose = numpy.eye(4, dtype=numpy.float32)
@@ -224,55 +225,45 @@ if __name__ == "__main__":
 
     points = []
 
-    render_point_cloud = RenderPointCloud(height, width)
-
-    step = 0
-    while cap.isOpened():
-    
-        ret, frame = cap.read()
-
-        if ret == True and step%5 == 0:
-            frame = cv2.resize(frame, (width, height), interpolation = cv2.INTER_AREA)
-
-            q1, q2, q_3d, transf = vo.step(frame)
-            
-            cur_pose = numpy.matmul(cur_pose, numpy.linalg.inv(transf))
+    render_point_cloud = RenderPointCloud()
 
 
-            x = cur_pose[0][3]
-            y = cur_pose[2][3]
-            z = cur_pose[1][3]
-            
-            trajectory.append([x, y])
-
-            
-            mat = transf.copy()
-
-            scale = 0.001
-            mat[0][3]*= scale
-            mat[1][3]*= scale
-            mat[2][3]*= scale
-
-            
-            mat = numpy.linalg.inv(mat) 
-
-            #points = []
-            points.append(q_3d)
-            for j in range(len(points)):
-                points[j] = points[j]@mat
-            
-
-            k = 0.9
-            time_prev   = time_now
-            time_now    = time.time()
-            fps = k*fps + (1.0 - k)*1.0/(time_now - time_prev)
+    for i in range(count):
+        frame = images[i%count]
 
 
-            
+        frame = cv2.resize(frame, (width, height), interpolation = cv2.INTER_AREA)
+
+        q1, q2, q_3d, transf = vo.step(frame)
+        
+        cur_pose = numpy.matmul(cur_pose, numpy.linalg.inv(transf))
+        cur_pose_inv = numpy.matmul(cur_pose_inv, transf)
+
+
+        x = cur_pose[0][3]
+        y = cur_pose[2][3]
+        z = cur_pose[1][3]
+        
+        trajectory.append([x, y])
+
+        #points = []
+        points.append(q_3d)
+
+        '''
+        mat = transf
+        for j in range(len(points)):
+            points[j] = points[j]@mat
+        '''
+
+        k = 0.9
+        time_prev   = time_now
+        time_now    = time.time()
+        fps = k*fps + (1.0 - k)*1.0/(time_now - time_prev)
+
+
+        if i%5 == 0:
             render(frame, q1, q2, trajectory, fps, writer)
+            render_point_cloud.render(points)
 
-            if step%30 == 0:
-                render_point_cloud.render(points)
-
-        step+= 1
-            
+        
+        

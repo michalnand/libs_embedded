@@ -68,46 +68,52 @@ class VisualOdometry:
         mat_e, _ = cv2.findEssentialMat(q1, q2, self.mat_k)
         #mat_f, _ = cv2.findFundamentalMat(q1,q2)
         
-        R, t, q_3d = self.decomp_essential_mat(mat_e, q1, q2)
+        R, t, _ = self.decomp_essential_mat(mat_e, q1, q2)
 
         transf = self._form_transf(R,t)
 
+
+        #transf3d = self.get_3d_transformation_matrix(transf)
         q_3d = self.points_to_3d(q1, q2, transf )
 
-        return q1, q2, q_3d, transf
+        return q1, q2, q_3d.copy(), transf
 
 
+    def get_3d_transformation_matrix(self, transf):
+        mat_k = numpy.concatenate([self.mat_k, numpy.zeros((3, 1))], axis=1)
+
+        mat_t = mat_k@transf
+        
+        return mat_t
 
     def points_to_3d(self, q1, q2, transf):
 
         mat_k = numpy.concatenate([self.mat_k, numpy.zeros((3, 1))], axis=1)
 
-        p = mat_k@transf
-        result = cv2.triangulatePoints(self.mat_p, p, q1.T, q2.T)
-
-        return result.T
-
-
         '''
+        p = mat_k@transf
+        homogeneous_4d_coords = cv2.triangulatePoints(self.mat_p, p, q1.T, q2.T)
+
+        
+
         result = cv2.convertPointsFromHomogeneous(homogeneous_4d_coords.transpose())
 
         result = result[:,0,:]
         result = p.dot(result)
         result = result.T
 
-        result = numpy.concatenate([result, numpy.ones((result.shape[0], 1))], axis=1)
+        #result = numpy.concatenate([result, numpy.ones((result.shape[0], 1))], axis=1)
         '''
 
     
-        ''''
+        
         mat_t  = mat_k@transf
         mat_t  = numpy.linalg.pinv(mat_t)
         points = numpy.concatenate([q1, numpy.ones((q1.shape[0], 1))], axis=1)
         points[0:2, :] = numpy.flipud(points[0:2, :])
         
         result = points@mat_t.T
-        '''
-
+        
 
         return result
         

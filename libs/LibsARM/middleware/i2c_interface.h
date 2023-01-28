@@ -18,12 +18,17 @@ class I2C_Interface
 
 
     public:
+        unsigned char check(unsigned char dev_adr);
+
         void write_reg(unsigned char dev_adr, unsigned char reg_adr, unsigned char value);
+        void write_reg_extended(unsigned char dev_adr, unsigned int reg_adr, unsigned char value);
         void write_reg_16bit(unsigned char dev_adr, unsigned char reg_adr, unsigned int value);
         void write_reg_multi(unsigned char dev_adr, unsigned char reg_adr, unsigned char *data, unsigned int count);
         unsigned char read_reg(unsigned char dev_adr, unsigned char reg_adr);
+        unsigned char read_reg_extended(unsigned char dev_adr, unsigned int reg_adr);
         unsigned int read_reg_16bit(unsigned char dev_adr, unsigned char reg_adr);
         void read_reg_multi(unsigned char dev_adr, unsigned char reg_adr, unsigned char *data, unsigned int count);
+
         void delay();
 
 };
