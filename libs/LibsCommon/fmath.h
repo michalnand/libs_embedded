@@ -1,5 +1,5 @@
-#ifndef _MATH_H_
-#define _MATH_H_
+#ifndef _F_MATH_H_
+#define _F_MATH_H_
 
 #include "math_t.h"
 
@@ -27,7 +27,7 @@ struct Vect4d
     DType x, y, z, w;
 };
 
-unsigned int rand();
+int rand();
 
 float fsqrt(float x);
 

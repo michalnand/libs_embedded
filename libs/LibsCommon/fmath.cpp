@@ -4,7 +4,7 @@
 
 unsigned int g_rand = 0;
 
-unsigned int rand()
+int rand()
 {
     g_rand = 1103515245*g_rand + 12345;
 
