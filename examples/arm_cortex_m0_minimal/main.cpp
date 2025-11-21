@@ -1,7 +1,7 @@
 #include "device.h"
 #include <gpio.h>
 
-
+#include <Ds1302.h>
 
 void SetPLL()
 {
@@ -27,8 +27,28 @@ void delay_loops(uint32_t loops)
   }
 }
 
+
+#define DS_CLK 0
+#define DS_DAT 4
+#define DS_RST 16
+
+class RtClock
+{
+  public:
+    RtClock(): rtc(DS_CLK, DS_DAT, DS_RST)
+    {
+
+    }
+  private:
+
+    Ds1302 rtc;
+    
+};
+
 int main(void)
 {
+  RtClock clk_chip;
+
   //cpu clock init
   SystemInit();
 

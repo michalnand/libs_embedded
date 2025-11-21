@@ -1,4 +1,4 @@
-LIBS_EMBEDDED_PATH = $(HOME)/programming/libs_embedded/libs/
+LIBS_EMBEDDED_PATH = $(HOME)/projects/libs_embedded/libs/
 
 
 STD_PERIPH_PATH 	= $(LIBS_EMBEDDED_PATH)/LibsARM/stm32f0/

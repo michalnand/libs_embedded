@@ -46,9 +46,9 @@ SIZE 	= $(GCCPREFIX)size
 
 LDFLAGS = $(TARGET) -Wl,--gc-sections
 
-CCFLAGS = $(TARGET) $(INC) -c -O2 -Os  -s -Wall -Wextra -pedantic -std=c99 -nostdlib   -fdata-sections -ffunction-sections   -Wl,--gc-sections
+CCFLAGS = $(TARGET) $(INC) -c -O2 -Os  -s -Wall -Wextra -pedantic -std=c99 -ffreestanding -nostdlib   -fdata-sections -ffunction-sections   -Wl,--gc-sections
 CXXFLAGS= $(TARGET) $(INC) -c -O2 -Os  -s -Wall -Wextra -pedantic -std=c++14 -fno-rtti  -fno-exceptions -fdata-sections -ffunction-sections  -Wl,--gc-sections
-LDFLAGS = -T$(LDSCRIPT) $(TARGET) -nostdlib -Wl,--gc-sections -lgcc 
+LDFLAGS = -T$(LDSCRIPT) $(TARGET) -nostdlib -Wl,--gc-sections -lgcc -ffreestanding
 
 
 C_OBJS 		= $(C_SRCS:.c=.o)

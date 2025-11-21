@@ -39,7 +39,7 @@ void *memset(void *buffer, int c, int len)
 }
 
 
-/*
+
 void *memset(const void *buffer, int c, int len)
 {
   unsigned char *b_tmp = (unsigned char*)buffer;
@@ -51,4 +51,3 @@ void *memset(const void *buffer, int c, int len)
   
   return (void*)buffer;
 }
-*/
